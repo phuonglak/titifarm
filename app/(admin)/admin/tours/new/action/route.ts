@@ -15,18 +15,25 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "INVALID_INPUT" }, { status: 400 });
   }
 
-  // Ensure upload dir
-  const uploadDir = path.join(process.cwd(), "public", "uploads");
-  await fs.mkdir(uploadDir, { recursive: true });
-
-  // Save file
+  // Save file: on Vercel (serverless) we cannot persist to public dir.
+  // Fall back to data URL when VERCEL env is present; otherwise write to /public/uploads for local dev.
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
-  const ext = path.extname(file.name) || ".png";
-  const filename = `${slug}-${Date.now()}${ext}`;
-  const filepath = path.join(uploadDir, filename);
-  await fs.writeFile(filepath, buffer);
-  const publicUrl = `/uploads/${filename}`;
+  let publicUrl: string;
+  if (process.env.VERCEL) {
+    const ext = (path.extname(file.name) || ".png").toLowerCase();
+    const contentType = file.type || (ext === ".jpg" || ext === ".jpeg" ? "image/jpeg" : ext === ".png" ? "image/png" : "application/octet-stream");
+    const base64 = buffer.toString("base64");
+    publicUrl = `data:${contentType};base64,${base64}`;
+  } else {
+    const uploadDir = path.join(process.cwd(), "public", "uploads");
+    await fs.mkdir(uploadDir, { recursive: true });
+    const ext = path.extname(file.name) || ".png";
+    const filename = `${slug}-${Date.now()}${ext}`;
+    const filepath = path.join(uploadDir, filename);
+    await fs.writeFile(filepath, buffer);
+    publicUrl = `/uploads/${filename}`;
+  }
 
   // Ensure a default destination exists (TitiFarm)
   const defaultDest = await prisma.destination.upsert({
