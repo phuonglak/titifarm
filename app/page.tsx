@@ -7,7 +7,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative z-10 h-full flex items-center">
           <div className="max-w-2xl px-6">
-            <h1 className="text-white text-3xl md:text-5xl font-semibold">TitiFarm – Nông trại trải nghiệm cho gia đình</h1>
+            <h1 className="text-white text-3xl md:text-5xl font-semibold">Chạm đến thiên nhiên. Học từ trải nghiệm</h1>
             <p className="text-white/90 mt-3 md:text-lg">Đến TitiFarm để cho trẻ học làm nông, gần gũi thiên nhiên và vui chơi an toàn.</p>
             <div className="mt-6 flex gap-3">
               <Link href="/tours" className="bg-white text-black rounded px-5 py-2 font-medium">Đặt vé tham quan</Link>

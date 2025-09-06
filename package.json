@@ -5,10 +5,14 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "vercel:build": "prisma migrate deploy && next build",
     "postinstall": "prisma generate",
     "start": "next start",
     "lint": "eslint",
-    "db:seed": "prisma db seed"
+    "db:seed": "prisma db seed",
+    "db:create-admin": "tsx scripts/create-admin.ts",
+    "db:create-sample-tour": "tsx scripts/create-sample-tour.ts",
+    "db:create-more-sample-tours": "tsx scripts/create-more-sample-tours.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",

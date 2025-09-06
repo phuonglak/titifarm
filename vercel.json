@@ -1,0 +1,9 @@
+{
+  "buildCommand": "next build",
+  "installCommand": "npm ci",
+  "functions": {
+    "app/api/**": {
+      "maxDuration": 10
+    }
+  }
+}
