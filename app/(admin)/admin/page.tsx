@@ -1,4 +1,5 @@
 import { prisma } from "@/app/lib/prisma";
+export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
   const [bookings, revenue] = await Promise.all([
